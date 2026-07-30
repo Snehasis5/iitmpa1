@@ -110,7 +110,7 @@ def build_application() -> Application:
     return app
 
 
-async def run_polling():
+def run_polling():
     app = build_application()
     logger.info("Starting Telegram bot polling...")
-    await app.run_polling(drop_pending_updates=True)
+    app.run_polling(drop_pending_updates=True)
