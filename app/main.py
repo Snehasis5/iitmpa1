@@ -1,5 +1,6 @@
 import os
 import threading
+import asyncio
 
 import uvicorn
 
@@ -13,11 +14,15 @@ def _run_http_server():
 
 
 def main():
+    # ✅ FIX: ensure event loop exists for PTB (required with uvloop + Python 3.11)
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     # Start FastAPI in background thread
     http_thread = threading.Thread(target=_run_http_server, daemon=True)
     http_thread.start()
 
-    # Run Telegram bot in main thread (NO asyncio loop handling here)
+    # Run Telegram bot (PTB manages loop internally)
     run_polling()
 
 
