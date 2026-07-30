@@ -1,6 +1,5 @@
 import os
 import threading
-import asyncio
 
 import uvicorn
 
@@ -18,14 +17,8 @@ def main():
     http_thread = threading.Thread(target=_run_http_server, daemon=True)
     http_thread.start()
 
-    # Create and set event loop, then run async bot properly
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
-    try:
-        loop.run_until_complete(run_polling())
-    finally:
-        loop.close()
+    # Run Telegram bot in main thread (NO asyncio loop handling here)
+    run_polling()
 
 
 if __name__ == "__main__":
