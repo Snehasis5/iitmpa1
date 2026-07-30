@@ -97,6 +97,8 @@ def build_application() -> Application:
 
 
 def run_polling():
-    app = build_application()
-    logger.info("Starting Telegram bot polling...")
-    app.run_polling(drop_pending_updates=True, close_loop=False)
+  app = build_application()
+  logger.info("Starting Telegram bot polling...")
+  # FIX: remove close_loop=False (causes loop issues in 3.11)
+  app.run_polling(drop_pending_updates=True)
+
