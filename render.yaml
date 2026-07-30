@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: tds-p1-data-analyst-bot
+    env: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: DEEPSEEK_BASE_URL
+        value: https://api.deepseek.com
+      - key: DEEPSEEK_MODEL
+        value: deepseek-chat
+      - key: PUBLIC_BASE_URL
+        sync: false
