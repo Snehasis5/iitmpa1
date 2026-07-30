@@ -1,14 +1,6 @@
-"""
-Entrypoint. Runs:
-  - a FastAPI server (health check + public log file) in a background thread
-  - the Telegram bot polling loop in the main thread
-
-This lets a single process/service (e.g. one Render "Web Service") both
-answer Telegram messages AND serve the public log_url.
-"""
-
 import os
 import threading
+import asyncio
 
 import uvicorn
 
@@ -22,8 +14,14 @@ def _run_http_server():
 
 
 def main():
+    # Start FastAPI in background thread
     http_thread = threading.Thread(target=_run_http_server, daemon=True)
     http_thread.start()
+
+    # Explicitly create and set event loop (FIX)
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     run_polling()
 
 
