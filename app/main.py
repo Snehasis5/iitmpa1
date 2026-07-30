@@ -18,11 +18,14 @@ def main():
     http_thread = threading.Thread(target=_run_http_server, daemon=True)
     http_thread.start()
 
-    # Explicitly create and set event loop (FIX)
+    # Create and set event loop, then run async bot properly
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    run_polling()
+    try:
+        loop.run_until_complete(run_polling())
+    finally:
+        loop.close()
 
 
 if __name__ == "__main__":
